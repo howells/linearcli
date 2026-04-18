@@ -1,0 +1,60 @@
+{
+  "name": "@howells/linearcli",
+  "version": "0.1.0",
+  "description": "CLI for Linear — issues, projects, teams, cycles. Agent-first: structured JSON output, schema introspection, input validation, dry-run.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Daniel Howells <daniel.howells@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/howells/linearcli"
+  },
+  "homepage": "https://github.com/howells/linearcli#readme",
+  "keywords": [
+    "linear",
+    "cli",
+    "issues",
+    "project-management",
+    "agent",
+    "ai"
+  ],
+  "bin": {
+    "linearcli": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "AGENTS.md",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "lint": "howells-lint",
+    "format": "howells-format",
+    "prepublishOnly": "pnpm build",
+    "prepare": "howells-husky"
+  },
+  "lint-staged": {
+    "*.{js,ts,jsx,tsx,json,jsonc,css}": "howells-format"
+  },
+  "dependencies": {
+    "@linear/sdk": "^82.0.0"
+  },
+  "devDependencies": {
+    "@howells/husky": "^0.1.0",
+    "@howells/lint": "^0.1.3",
+    "@howells/typescript-config": "^0.1.0",
+    "@types/node": "^22.0.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.7.0",
+    "vitest": "^4.1.4"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
