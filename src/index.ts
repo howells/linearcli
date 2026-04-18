@@ -1,65 +1,19 @@
 #!/usr/bin/env node
 
+import { error, success } from "@howells/cli";
+import {
+  flag,
+  getLimit,
+  hasFlag,
+  readJsonInput,
+  readResult,
+} from "@howells/cli/args";
+import { hardenId, validateTitle } from "@howells/cli/validate";
 import { getClient } from "./client.ts";
 import * as commands from "./commands.ts";
-import { error, filterFields, success } from "./output.ts";
-import {
-  validateFields,
-  validateIssueId,
-  validatePositiveInt,
-  validateTitle,
-} from "./validate.ts";
 
 const args = process.argv.slice(2);
 const command = args[0];
-
-function flag(name: string): string | undefined {
-  const idx = args.indexOf(`--${name}`);
-  if (idx === -1) return undefined;
-  return args[idx + 1];
-}
-
-function hasFlag(name: string): boolean {
-  return args.includes(`--${name}`);
-}
-
-function getLimit(cmd: string): number | undefined {
-  const raw = flag("limit");
-  if (!raw) return undefined;
-  return validatePositiveInt(raw, "limit", cmd);
-}
-
-function getFields(cmd: string): string | undefined {
-  const raw = flag("fields");
-  if (!raw) return undefined;
-  validateFields(raw, cmd);
-  return raw;
-}
-
-function readJsonInput(cmd: string): Record<string, unknown> {
-  const jsonStr = flag("json");
-  if (!jsonStr) return {};
-  try {
-    const parsed = JSON.parse(jsonStr);
-    if (
-      typeof parsed !== "object" ||
-      parsed === null ||
-      Array.isArray(parsed)
-    ) {
-      error("--json must be a JSON object.", cmd);
-    }
-    return parsed as Record<string, unknown>;
-  } catch {
-    error("--json contains invalid JSON.", cmd);
-  }
-}
-
-function readResult(cmd: string, data: Record<string, unknown>[]): void {
-  const limit = getLimit(cmd);
-  const limited = limit ? data.slice(0, limit) : data;
-  const filtered = filterFields(limited, getFields(cmd));
-  success(filtered, cmd);
-}
 
 // --- Commands ---
 
@@ -93,7 +47,7 @@ switch (command) {
     if (!client) break;
     const id = args[1];
     if (!id) error("issue requires an identifier (e.g. ENG-123).", "issue");
-    validateIssueId(id, "issue");
+    hardenId(id, "issue", { label: "issue ID" });
 
     if (hasFlag("comments")) {
       commands
@@ -249,7 +203,7 @@ switch (command) {
     const json = readJsonInput("update");
     const id = (json.id as string) ?? args[1];
     if (!id) error("issue ID is required.", "update");
-    validateIssueId(id, "update");
+    hardenId(id, "update", { label: "issue ID" });
 
     const updates: Record<string, unknown> = {};
     const title = (json.title as string) ?? flag("title");
@@ -288,7 +242,7 @@ switch (command) {
     const body = (json.body as string) ?? args[2];
     if (!id) error("issue ID is required.", "comment");
     if (!body) error("comment body is required.", "comment");
-    validateIssueId(id, "comment");
+    hardenId(id, "comment", { label: "issue ID" });
 
     if (hasFlag("dry-run")) {
       success({ action: "comment", issueId: id, body }, "comment");
@@ -309,7 +263,7 @@ switch (command) {
     success(
       {
         cli: "linearcli",
-        version: "0.1.0",
+        version: "0.2.0",
         description: "Agent-first CLI for Linear",
         auth: "Set LINEAR_API_KEY or LINEAR env var",
         commands: {

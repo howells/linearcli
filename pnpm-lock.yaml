@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@howells/cli':
+        specifier: ^0.1.0
+        version: 0.1.0
       '@linear/sdk':
         specifier: ^82.0.0
         version: 82.0.0(graphql@16.13.2)
@@ -270,6 +273,10 @@ packages:
     resolution: {integrity: sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==}
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
+
+  '@howells/cli@0.1.0':
+    resolution: {integrity: sha512-nJ/0tAjVkG2dQgZiIVkLXL7PT1e8cxyGTQb8AmjSgciJex2YgUjuELcrxXyXX9PtEpWuk+wxX4IIAEVeVIOeXA==}
+    engines: {node: '>=20'}
 
   '@howells/husky@0.1.0':
     resolution: {integrity: sha512-SABjJMQau86KnX3vex3TxeM6sg3CYX/p53chVkc02vGrZNMDoXfgnujvuBoblqbZ5ircW/cq6oCx6FQ0UzideA==}
@@ -1082,6 +1089,8 @@ snapshots:
   '@graphql-typed-document-node/core@3.2.0(graphql@16.13.2)':
     dependencies:
       graphql: 16.13.2
+
+  '@howells/cli@0.1.0': {}
 
   '@howells/husky@0.1.0':
     dependencies:

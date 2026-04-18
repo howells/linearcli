@@ -1,6 +1,6 @@
 {
   "name": "@howells/linearcli",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "CLI for Linear — issues, projects, teams, cycles. Agent-first: structured JSON output, schema introspection, input validation, dry-run.",
   "type": "module",
   "license": "MIT",
@@ -41,6 +41,7 @@
     "*.{js,ts,jsx,tsx,json,jsonc,css}": "howells-format"
   },
   "dependencies": {
+    "@howells/cli": "^0.1.0",
     "@linear/sdk": "^82.0.0"
   },
   "devDependencies": {

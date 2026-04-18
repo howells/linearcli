@@ -1,5 +1,5 @@
+import { error } from "@howells/cli";
 import { LinearClient } from "@linear/sdk";
-import { error } from "./output.ts";
 
 let client: LinearClient | undefined;
 
