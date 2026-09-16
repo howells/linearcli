@@ -24,7 +24,14 @@ function run(args: string): {
   }
 }
 
-describe("read commands", () => {
+// These call the live Linear API. A CI runner has no key, and the publish gate
+// has no business making requests against a real workspace. They run wherever a
+// key is configured, which is the only place their assertions mean anything.
+const hasLiveWorkspace = Boolean(
+  process.env.LINEAR_API_KEY ?? process.env.LINEAR,
+);
+
+describe.skipIf(!hasLiveWorkspace)("read commands", () => {
   it("me returns user info", () => {
     const result = run("me");
     expect(result.ok).toBe(true);

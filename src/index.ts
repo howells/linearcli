@@ -3,6 +3,7 @@
 import { error, success } from "@howells/cli";
 import {
   flag,
+  getFields,
   getLimit,
   hasFlag,
   readJsonInput,
@@ -17,14 +18,16 @@ const command = args[0];
 
 // --- Commands ---
 
-const client =
-  command && !["help", "--help", "-h", "schema"].includes(command)
-    ? getClient()
-    : undefined;
-
 switch (command) {
   case "issues": {
-    if (!client) break;
+    // Validate the invocation before building a client. The shape of --limit
+    // and --fields is knowable without an API key, and checking it first means
+    // a typo is reported as a typo rather than as a missing key - or, for
+    // --fields, only after a request has already been spent.
+    const limit = getLimit("issues");
+    getFields("issues");
+
+    const client = getClient();
     commands
       .issues(client, {
         team: flag("team"),
@@ -32,7 +35,7 @@ switch (command) {
         state: flag("state"),
         label: flag("label"),
         project: flag("project"),
-        limit: getLimit("issues"),
+        limit,
       })
       .then((data) =>
         readResult("issues", data as unknown as Record<string, unknown>[]),
@@ -44,10 +47,11 @@ switch (command) {
   }
 
   case "issue": {
-    if (!client) break;
     const id = args[1];
     if (!id) error("issue requires an identifier (e.g. ENG-123).", "issue");
     hardenId(id, "issue", { label: "issue ID" });
+
+    const client = getClient();
 
     if (hasFlag("comments")) {
       commands
@@ -68,7 +72,7 @@ switch (command) {
   }
 
   case "search": {
-    if (!client) break;
+    const client = getClient();
     const query = args[1];
     if (!query) error("search requires a query.", "search");
     commands
@@ -83,7 +87,7 @@ switch (command) {
   }
 
   case "teams": {
-    if (!client) break;
+    const client = getClient();
     commands
       .teams(client)
       .then((data) => success(data, "teams"))
@@ -94,7 +98,7 @@ switch (command) {
   }
 
   case "projects": {
-    if (!client) break;
+    const client = getClient();
     commands
       .projects(client, { limit: getLimit("projects") })
       .then((data) =>
@@ -107,7 +111,7 @@ switch (command) {
   }
 
   case "cycles": {
-    if (!client) break;
+    const client = getClient();
     commands
       .cycles(client, { team: flag("team") })
       .then((data) => success(data, "cycles"))
@@ -118,7 +122,7 @@ switch (command) {
   }
 
   case "states": {
-    if (!client) break;
+    const client = getClient();
     commands
       .states(client, { team: flag("team") })
       .then((data) =>
@@ -131,7 +135,7 @@ switch (command) {
   }
 
   case "labels": {
-    if (!client) break;
+    const client = getClient();
     commands
       .labels(client)
       .then((data) => success(data, "labels"))
@@ -142,7 +146,7 @@ switch (command) {
   }
 
   case "me": {
-    if (!client) break;
+    const client = getClient();
     commands
       .me(client)
       .then((data) => success(data, "me"))
@@ -153,7 +157,6 @@ switch (command) {
   }
 
   case "create": {
-    if (!client) break;
     const json = readJsonInput("create");
     const title = (json.title as string) ?? args[1];
     const team = (json.team as string) ?? flag("team");
@@ -181,6 +184,7 @@ switch (command) {
       );
     }
 
+    const client = getClient();
     commands
       .createIssue(client, {
         title,
@@ -199,7 +203,6 @@ switch (command) {
   }
 
   case "update": {
-    if (!client) break;
     const json = readJsonInput("update");
     const id = (json.id as string) ?? args[1];
     if (!id) error("issue ID is required.", "update");
@@ -226,6 +229,7 @@ switch (command) {
       success({ action: "update", id, updates }, "update");
     }
 
+    const client = getClient();
     commands
       .updateIssue(client, id, updates)
       .then((data) => success({ action: "updated", issue: data }, "update"))
@@ -236,7 +240,6 @@ switch (command) {
   }
 
   case "comment": {
-    if (!client) break;
     const json = readJsonInput("comment");
     const id = (json.issueId as string) ?? args[1];
     const body = (json.body as string) ?? args[2];
@@ -248,6 +251,7 @@ switch (command) {
       success({ action: "comment", issueId: id, body }, "comment");
     }
 
+    const client = getClient();
     commands
       .addComment(client, id, body)
       .then((data) =>
