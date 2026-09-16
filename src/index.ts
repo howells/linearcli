@@ -72,11 +72,14 @@ switch (command) {
   }
 
   case "search": {
+    const limit = getLimit("search");
+    getFields("search");
+
     const client = getClient();
     const query = args[1];
     if (!query) error("search requires a query.", "search");
     commands
-      .search(client, query, { limit: getLimit("search") })
+      .search(client, query, { limit })
       .then((data) =>
         readResult("search", data as unknown as Record<string, unknown>[]),
       )
@@ -98,9 +101,12 @@ switch (command) {
   }
 
   case "projects": {
+    const limit = getLimit("projects");
+    getFields("projects");
+
     const client = getClient();
     commands
-      .projects(client, { limit: getLimit("projects") })
+      .projects(client, { limit })
       .then((data) =>
         readResult("projects", data as unknown as Record<string, unknown>[]),
       )
@@ -122,6 +128,9 @@ switch (command) {
   }
 
   case "states": {
+    getLimit("states");
+    getFields("states");
+
     const client = getClient();
     commands
       .states(client, { team: flag("team") })
