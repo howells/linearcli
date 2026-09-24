@@ -42,21 +42,25 @@ linearcli schema
 ## Common Workflows
 
 ### Triage assigned issues
+
 ```bash
 linearcli issues --assignee me --state "In Progress" --fields identifier,title,priority,dueDate
 ```
 
 ### Create and assign
+
 ```bash
 linearcli create --json '{"title":"Fix login redirect","team":"ENG","priority":2,"description":"Users get 404 after OAuth callback"}'
 ```
 
 ### Add a comment
+
 ```bash
 linearcli comment ENG-123 --json '{"body":"Fixed in PR #42, ready for review"}'
 ```
 
 ### Check team workload
+
 ```bash
 linearcli issues --team ENG --state "In Progress" --fields identifier,title,assignee
 ```

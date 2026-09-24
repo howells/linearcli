@@ -9,6 +9,7 @@ import {
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { delimiter, join } from "node:path";
+
 import { afterEach, describe, expect, it } from "vitest";
 
 // The agent skill's GraphQL helpers in skills/linear/scripts. Fixtures are local:
@@ -26,7 +27,7 @@ function run(
   command: string,
   args: string[],
   input: string,
-  env: NodeJS.ProcessEnv,
+  env: NodeJS.ProcessEnv
 ) {
   return spawnSync(command, args, {
     input,
@@ -91,7 +92,7 @@ describe("read-credential", () => {
       const result = spawnSync(
         "python3",
         [join(SCRIPTS, "read-credential.py"), "TEST_API_KEY"],
-        { env, cwd: scratch(), encoding: "utf-8", timeout: 10_000 },
+        { env, cwd: scratch(), encoding: "utf-8", timeout: 10_000 }
       );
       if (value === "fixture-token") {
         expect(result.status).toBe(0);
@@ -111,7 +112,7 @@ describe("read-credential .env fallback", () => {
     spawnSync("git", ["init", "-q", root]);
     writeFileSync(
       join(root, ".env"),
-      '# keys\nexport TEST_API_KEY="from-file"\n',
+      '# keys\nexport TEST_API_KEY="from-file"\n'
     );
     const nested = join(root, "apps", "web");
     mkdirSync(nested, { recursive: true });
@@ -124,11 +125,11 @@ describe("read-credential .env fallback", () => {
           cwd: nested,
           encoding: "utf-8",
           timeout: 10_000,
-        },
+        }
       );
     expect(read({ PATH: process.env.PATH }).stdout).toBe("from-file");
     expect(
-      read({ PATH: process.env.PATH, TEST_API_KEY: "from-env" }).stdout,
+      read({ PATH: process.env.PATH, TEST_API_KEY: "from-env" }).stdout
     ).toBe("from-env");
   });
 });
@@ -146,7 +147,7 @@ describe("graphql", () => {
       '{"query":"fixture"}',
       {
         PATH: `${directory}${delimiter}${process.env.PATH}`,
-      },
+      }
     );
     expect(result.status).toBe(78);
     expect(existsSync(marker)).toBe(false);
@@ -163,7 +164,7 @@ import json, sys
 args = sys.argv[1:]
 body = open('/dev/fd/3').read() if '--data-binary' in args else None
 print(json.dumps({'data': {'header': sys.stdin.read(), 'body': body, 'args': args}}))
-`,
+`
     );
     chmodSync(transport, 0o700);
     const body = '{"query":"fixture with spaces"}\n';

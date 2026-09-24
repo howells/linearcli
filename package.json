@@ -1,23 +1,22 @@
 {
   "name": "@howells/linearcli",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "CLI for Linear — issues, projects, teams, cycles. Agent-first: structured JSON output, schema introspection, input validation, dry-run.",
-  "type": "module",
+  "keywords": [
+    "agent",
+    "ai",
+    "cli",
+    "issues",
+    "linear",
+    "project-management"
+  ],
+  "homepage": "https://github.com/howells/linearcli#readme",
   "license": "MIT",
   "author": "Daniel Howells <daniel.howells@gmail.com>",
   "repository": {
     "type": "git",
     "url": "https://github.com/howells/linearcli"
   },
-  "homepage": "https://github.com/howells/linearcli#readme",
-  "keywords": [
-    "linear",
-    "cli",
-    "issues",
-    "project-management",
-    "agent",
-    "ai"
-  ],
   "bin": {
     "linearcli": "./dist/index.js"
   },
@@ -27,33 +26,37 @@
     "README.md",
     "LICENSE"
   ],
+  "type": "module",
   "scripts": {
     "build": "tsc",
     "dev": "tsx src/index.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "lint": "howells-lint",
-    "format": "howells-format",
+    "lint": "howells-check .",
     "prepublishOnly": "pnpm build",
-    "prepare": "howells-husky"
-  },
-  "lint-staged": {
-    "*.{js,ts,jsx,tsx,json,jsonc,css}": "howells-format"
+    "prepare": "howells-husky",
+    "lint:fix": "howells-fix .",
+    "lint:ratchet": "howells-ratchet",
+    "lint:rebaseline": "howells-ratchet --write",
+    "prepush": "pnpm typecheck && pnpm lint:ratchet && pnpm test"
   },
   "dependencies": {
-    "@howells/cli": "^0.1.0",
-    "@linear/sdk": "^82.0.0"
+    "@howells/cli": "^0.2.0",
+    "@linear/sdk": "^95.2.0"
   },
   "devDependencies": {
-    "@howells/husky": "^0.1.0",
-    "@howells/lint": "^0.1.3",
-    "@howells/typescript-config": "^0.1.2",
-    "@types/node": "^22.0.0",
+    "@howells/husky": "^0.2.5",
+    "@howells/lint": "^3.5.1",
+    "@howells/typescript-config": "^0.1.6",
+    "@types/node": "^26.6.2",
     "husky": "^9.1.7",
-    "lint-staged": "^16.4.0",
-    "tsx": "^4.21.0",
-    "typescript": "^5.7.0",
-    "vitest": "^4.1.4"
+    "lint-staged": "^17.5.1",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.1"
+  },
+  "lint-staged": {
+    "*.{js,ts,jsx,tsx,json,jsonc,css,md,mdx}": "howells-oxfmt --write"
   },
   "engines": {
     "node": ">=20"

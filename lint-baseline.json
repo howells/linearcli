@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "units": {
+    ".": {
+      "anti-slop(no-chained-type-assertions)": 4,
+      "anti-slop(no-known-value-widening)": 1,
+      "anti-slop(no-runtime-typeof)": 2,
+      "anti-slop(no-unsafe-dictionary-type)": 16,
+      "anti-slop(require-safety-comment-for-type-assertion)": 40,
+      "eslint(curly)": 28,
+      "eslint(func-style)": 18,
+      "eslint(no-await-in-loop)": 4,
+      "eslint(no-restricted-properties)": 11,
+      "eslint(no-shadow)": 6,
+      "eslint(prefer-destructuring)": 5,
+      "eslint(sort-keys)": 54,
+      "promise(prefer-await-to-callbacks)": 13,
+      "promise(prefer-await-to-then)": 26,
+      "typescript(no-confusing-void-expression)": 4,
+      "typescript(no-unnecessary-type-assertion)": 1,
+      "typescript(no-unsafe-argument)": 8,
+      "typescript(no-unsafe-assignment)": 30,
+      "typescript(no-unsafe-call)": 39,
+      "typescript(no-unsafe-member-access)": 36,
+      "typescript(no-unsafe-return)": 6,
+      "typescript(no-unsafe-type-assertion)": 35,
+      "typescript(return-await)": 9,
+      "typescript(strict-boolean-expressions)": 19,
+      "typescript(use-unknown-in-catch-callback-variable)": 13,
+      "unicorn(catch-error-name)": 14,
+      "unicorn(import-style)": 2,
+      "unicorn(switch-case-braces)": 4,
+      "vitest(no-conditional-expect)": 8,
+      "vitest(require-top-level-describe)": 1,
+      "vitest(valid-expect)": 1
+    }
+  }
+}

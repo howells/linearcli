@@ -10,6 +10,7 @@ import {
   readResult,
 } from "@howells/cli/args";
 import { hardenId, validateTitle } from "@howells/cli/validate";
+
 import { getClient } from "./client.ts";
 import * as commands from "./commands.ts";
 
@@ -38,10 +39,10 @@ switch (command) {
         limit,
       })
       .then((data) =>
-        readResult("issues", data as unknown as Record<string, unknown>[]),
+        readResult("issues", data as unknown as Record<string, unknown>[])
       )
       .catch((err) =>
-        error(err instanceof Error ? err.message : String(err), "issues"),
+        error(err instanceof Error ? err.message : String(err), "issues")
       );
     break;
   }
@@ -58,14 +59,14 @@ switch (command) {
         .issueWithComments(client, id)
         .then((data) => success(data, "issue"))
         .catch((err) =>
-          error(err instanceof Error ? err.message : String(err), "issue"),
+          error(err instanceof Error ? err.message : String(err), "issue")
         );
     } else {
       commands
         .issue(client, id)
         .then((data) => success(data, "issue"))
         .catch((err) =>
-          error(err instanceof Error ? err.message : String(err), "issue"),
+          error(err instanceof Error ? err.message : String(err), "issue")
         );
     }
     break;
@@ -81,10 +82,10 @@ switch (command) {
     commands
       .search(client, query, { limit })
       .then((data) =>
-        readResult("search", data as unknown as Record<string, unknown>[]),
+        readResult("search", data as unknown as Record<string, unknown>[])
       )
       .catch((err) =>
-        error(err instanceof Error ? err.message : String(err), "search"),
+        error(err instanceof Error ? err.message : String(err), "search")
       );
     break;
   }
@@ -95,7 +96,7 @@ switch (command) {
       .teams(client)
       .then((data) => success(data, "teams"))
       .catch((err) =>
-        error(err instanceof Error ? err.message : String(err), "teams"),
+        error(err instanceof Error ? err.message : String(err), "teams")
       );
     break;
   }
@@ -108,10 +109,10 @@ switch (command) {
     commands
       .projects(client, { limit })
       .then((data) =>
-        readResult("projects", data as unknown as Record<string, unknown>[]),
+        readResult("projects", data as unknown as Record<string, unknown>[])
       )
       .catch((err) =>
-        error(err instanceof Error ? err.message : String(err), "projects"),
+        error(err instanceof Error ? err.message : String(err), "projects")
       );
     break;
   }
@@ -122,7 +123,7 @@ switch (command) {
       .cycles(client, { team: flag("team") })
       .then((data) => success(data, "cycles"))
       .catch((err) =>
-        error(err instanceof Error ? err.message : String(err), "cycles"),
+        error(err instanceof Error ? err.message : String(err), "cycles")
       );
     break;
   }
@@ -135,10 +136,10 @@ switch (command) {
     commands
       .states(client, { team: flag("team") })
       .then((data) =>
-        readResult("states", data as unknown as Record<string, unknown>[]),
+        readResult("states", data as unknown as Record<string, unknown>[])
       )
       .catch((err) =>
-        error(err instanceof Error ? err.message : String(err), "states"),
+        error(err instanceof Error ? err.message : String(err), "states")
       );
     break;
   }
@@ -149,7 +150,7 @@ switch (command) {
       .labels(client)
       .then((data) => success(data, "labels"))
       .catch((err) =>
-        error(err instanceof Error ? err.message : String(err), "labels"),
+        error(err instanceof Error ? err.message : String(err), "labels")
       );
     break;
   }
@@ -160,7 +161,7 @@ switch (command) {
       .me(client)
       .then((data) => success(data, "me"))
       .catch((err) =>
-        error(err instanceof Error ? err.message : String(err), "me"),
+        error(err instanceof Error ? err.message : String(err), "me")
       );
     break;
   }
@@ -189,7 +190,7 @@ switch (command) {
           project: (json.project as string) ?? flag("project"),
           dueDate: (json.dueDate as string) ?? flag("due-date"),
         },
-        "create",
+        "create"
       );
     }
 
@@ -206,7 +207,7 @@ switch (command) {
       })
       .then((data) => success({ action: "created", issue: data }, "create"))
       .catch((err) =>
-        error(err instanceof Error ? err.message : String(err), "create"),
+        error(err instanceof Error ? err.message : String(err), "create")
       );
     break;
   }
@@ -243,7 +244,7 @@ switch (command) {
       .updateIssue(client, id, updates)
       .then((data) => success({ action: "updated", issue: data }, "update"))
       .catch((err) =>
-        error(err instanceof Error ? err.message : String(err), "update"),
+        error(err instanceof Error ? err.message : String(err), "update")
       );
     break;
   }
@@ -264,10 +265,10 @@ switch (command) {
     commands
       .addComment(client, id, body)
       .then((data) =>
-        success({ action: "commented", comment: data }, "comment"),
+        success({ action: "commented", comment: data }, "comment")
       )
       .catch((err) =>
-        error(err instanceof Error ? err.message : String(err), "comment"),
+        error(err instanceof Error ? err.message : String(err), "comment")
       );
     break;
   }
@@ -393,7 +394,7 @@ switch (command) {
           "--comments": "Include comments (issue command only)",
         },
       },
-      "schema",
+      "schema"
     );
     break;
 
@@ -418,7 +419,7 @@ switch (command) {
         write: ["create <title>", "update <id>", "comment <id> <body>"],
         meta: ["schema", "help"],
       },
-      "help",
+      "help"
     );
     break;
 

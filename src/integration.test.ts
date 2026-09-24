@@ -1,4 +1,5 @@
 import { execSync } from "node:child_process";
+
 import { describe, expect, it } from "vitest";
 
 const CLI = "npx tsx src/index.ts";
@@ -28,7 +29,7 @@ function run(args: string): {
 // has no business making requests against a real workspace. They run wherever a
 // key is configured, which is the only place their assertions mean anything.
 const hasLiveWorkspace = Boolean(
-  process.env.LINEAR_API_KEY ?? process.env.LINEAR,
+  process.env.LINEAR_API_KEY ?? process.env.LINEAR
 );
 
 describe.skipIf(!hasLiveWorkspace)("read commands", () => {
@@ -139,7 +140,7 @@ describe("error handling", () => {
 describe("dry-run", () => {
   it("validates create without executing", () => {
     const result = run(
-      'create --json \'{"title":"Dry run test","team":"ENG"}\' --dry-run',
+      'create --json \'{"title":"Dry run test","team":"ENG"}\' --dry-run'
     );
     expect(result.ok).toBe(true);
     const data = result.data as Record<string, unknown>;

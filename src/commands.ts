@@ -20,7 +20,7 @@ interface IssueResult {
 }
 
 async function mapIssue(
-  issue: Awaited<ReturnType<LinearClient["issue"]>>,
+  issue: Awaited<ReturnType<LinearClient["issue"]>>
 ): Promise<IssueResult> {
   const [state, assignee, team, project, labels] = await Promise.all([
     issue.state,
@@ -59,7 +59,7 @@ export async function issues(
     label?: string;
     project?: string;
     limit?: number;
-  } = {},
+  } = {}
 ): Promise<IssueResult[]> {
   const filter: Record<string, unknown> = {};
 
@@ -96,7 +96,7 @@ export async function issues(
 /** Get a single issue by identifier (e.g. "ENG-123") or UUID. */
 export async function issue(
   client: LinearClient,
-  idOrIdentifier: string,
+  idOrIdentifier: string
 ): Promise<IssueResult> {
   const result = await client.issue(idOrIdentifier);
   return mapIssue(result);
@@ -105,7 +105,7 @@ export async function issue(
 /** Get issue with comments. */
 export async function issueWithComments(
   client: LinearClient,
-  idOrIdentifier: string,
+  idOrIdentifier: string
 ): Promise<{
   issue: IssueResult;
   comments: { author: string; body: string; createdAt: string }[];
@@ -122,7 +122,7 @@ export async function issueWithComments(
         body: c.body,
         createdAt: c.createdAt.toISOString(),
       };
-    }),
+    })
   );
 
   return { issue: mapped, comments: mappedComments };
@@ -142,7 +142,7 @@ export async function teams(client: LinearClient) {
 /** List projects. */
 export async function projects(
   client: LinearClient,
-  options: { limit?: number } = {},
+  options: { limit?: number } = {}
 ) {
   const result = await client.projects({
     first: options.limit ?? 50,
@@ -163,14 +163,14 @@ export async function projects(
         targetDate: p.targetDate ?? null,
         url: p.url,
       };
-    }),
+    })
   );
 }
 
 /** List active cycles. */
 export async function cycles(
   client: LinearClient,
-  options: { team?: string } = {},
+  options: { team?: string } = {}
 ) {
   const filter: Record<string, unknown> = {};
   if (options.team) {
@@ -196,7 +196,7 @@ export async function cycles(
         progress: c.progress,
         issueCountHistory: c.issueCountHistory,
       };
-    }),
+    })
   );
 }
 
@@ -217,7 +217,7 @@ export async function me(client: LinearClient) {
 /** List workflow states. */
 export async function states(
   client: LinearClient,
-  options: { team?: string } = {},
+  options: { team?: string } = {}
 ) {
   const filter: Record<string, unknown> = {};
   if (options.team) {
@@ -236,7 +236,7 @@ export async function states(
         position: s.position,
         color: s.color,
       };
-    }),
+    })
   );
 }
 
@@ -264,7 +264,7 @@ export async function createIssue(
     stateId?: string;
     estimate?: number;
     dueDate?: string;
-  },
+  }
 ) {
   // Resolve team ID from key
   const teams = await client.teams({
@@ -287,7 +287,7 @@ export async function createIssue(
   if (options.dueDate) payload.dueDate = options.dueDate;
 
   const result = await client.createIssue(
-    payload as Parameters<typeof client.createIssue>[0],
+    payload as Parameters<typeof client.createIssue>[0]
   );
   const created = await result.issue;
   if (!created) throw new Error("Issue creation failed.");
@@ -299,7 +299,7 @@ export async function createIssue(
 export async function updateIssue(
   client: LinearClient,
   issueId: string,
-  updates: Record<string, unknown>,
+  updates: Record<string, unknown>
 ) {
   await client.updateIssue(issueId, updates);
   const updated = await client.issue(issueId);
@@ -310,7 +310,7 @@ export async function updateIssue(
 export async function addComment(
   client: LinearClient,
   issueId: string,
-  body: string,
+  body: string
 ) {
   const result = await client.createComment({ issueId, body });
   const comment = await result.comment;
@@ -328,7 +328,7 @@ export async function addComment(
 export async function search(
   client: LinearClient,
   query: string,
-  options: { limit?: number } = {},
+  options: { limit?: number } = {}
 ) {
   const result = await client.searchIssues(query, {
     first: options.limit ?? 20,
@@ -338,6 +338,6 @@ export async function search(
     result.nodes.map(async (node) => {
       const iss = await client.issue(node.id);
       return mapIssue(iss);
-    }),
+    })
   );
 }
