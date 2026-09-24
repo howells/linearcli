@@ -73,6 +73,14 @@ linearcli comment ENG-123 "Fixed in PR #42"
 - `schema` command for runtime introspection
 - `--assignee me` for current-user filtering
 
+## Agent Skill
+
+The `linear` skill in [`skills/linear`](skills/linear/SKILL.md) tells a coding agent how to use this: it picks the right workspace, uses this CLI for everyday issue work and falls back to GraphQL for the rest.
+
+```bash
+npx skills@latest add howells/linearcli --skill linear --global
+```
+
 ## License
 
 MIT
