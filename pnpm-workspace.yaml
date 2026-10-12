@@ -5,3 +5,6 @@ packages:
 # whose install script this repository needs must be named here.
 allowBuilds:
   esbuild: true
+
+minimumReleaseAgeExclude:
+  - '@howells/typescript-config@0.1.8'
